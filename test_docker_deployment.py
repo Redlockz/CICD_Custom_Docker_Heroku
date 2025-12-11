@@ -5,10 +5,14 @@ Tests that the containerized app is accessible
 import requests
 import time
 import sys
+import os
 
 
-def test_container_accessibility(base_url="http://localhost:5000"):
+def test_container_accessibility(base_url=None):
     """Test if the containerized app is accessible"""
+    if base_url is None:
+        base_url = os.getenv("APP_BASE_URL", "http://localhost:5000")
+    
     max_retries = 30
     retry_delay = 2
     

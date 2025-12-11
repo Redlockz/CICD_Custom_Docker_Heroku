@@ -76,7 +76,20 @@ jobs:
     
     - name: Wait for container to be ready
       run: |
-        sleep 5
+        echo "Waiting for container to be healthy..."
+        for i in {1..30}; do
+          if docker inspect --format='{{.State.Health.Status}}' flask-app-test 2>/dev/null | grep -q "healthy"; then
+            echo "Container is healthy!"
+            break
+          fi
+          if docker inspect --format='{{.State.Status}}' flask-app-test 2>/dev/null | grep -q "running"; then
+            echo "Container is running, waiting for health check... (attempt $i/30)"
+            sleep 2
+          else
+            echo "Container is not running!"
+            exit 1
+          fi
+        done
     
     - name: Check container is running
       run: |
