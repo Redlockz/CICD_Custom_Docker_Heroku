@@ -21,7 +21,7 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
     
@@ -45,7 +45,7 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
     
@@ -55,11 +55,11 @@ jobs:
     
     - name: Run Checkov scan on Dockerfile
       run: |
-        checkov -f Dockerfile --compact --quiet || true
+        checkov -f Dockerfile --compact --quiet --soft-fail
     
     - name: Run Checkov scan on entire directory
       run: |
-        checkov -d . --compact --quiet || true
+        checkov -d . --compact --quiet --soft-fail
 
   build-and-test-docker:
     name: Build and Test Docker Image
